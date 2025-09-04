@@ -1,6 +1,4 @@
-
-import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
 
 const carouselImages = [
   {
@@ -19,7 +17,12 @@ const carouselImages = [
 
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [currentTranslate, setCurrentTranslate] = useState(0);
+  const [prevTranslate, setPrevTranslate] = useState(0);
+  const [animationId, setAnimationId] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const length = carouselImages.length;
 
   const nextSlide = () => {
@@ -34,47 +37,104 @@ const HeroCarousel = () => {
     setCurrent(index);
   };
 
-  // Auto-advance the carousel
+  // Auto-advance the carousel every 3 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
+    if (!isDragging) {
+      const interval = setInterval(() => {
+        nextSlide();
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [current, isDragging]);
+
+  // Touch/Mouse event handlers for swipe/drag functionality
+  const handleStart = (clientX: number) => {
+    setIsDragging(true);
+    setStartX(clientX);
+    setAnimationId(0);
+    if (containerRef.current) {
+      containerRef.current.style.cursor = 'grabbing';
+    }
+  };
+
+  const handleMove = (clientX: number) => {
+    if (!isDragging) return;
+    const currentPosition = clientX;
+    const diff = currentPosition - startX;
+    setCurrentTranslate(prevTranslate + diff);
+  };
+
+  const handleEnd = () => {
+    setIsDragging(false);
+    const movedBy = currentTranslate - prevTranslate;
+    
+    // If moved enough negative then go to next slide
+    if (movedBy < -100) {
       nextSlide();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [current]);
+    }
+    
+    // If moved enough positive then go to previous slide
+    if (movedBy > 100) {
+      prevSlide();
+    }
+    
+    setCurrentTranslate(0);
+    setPrevTranslate(0);
+    
+    if (containerRef.current) {
+      containerRef.current.style.cursor = 'grab';
+    }
+  };
+
+  // Mouse events
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleStart(e.clientX);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    handleMove(e.clientX);
+  };
+
+  const handleMouseUp = () => {
+    handleEnd();
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      handleEnd();
+    }
+  };
+
+  // Touch events
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    handleMove(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    handleEnd();
+  };
 
   if (!carouselImages.length) {
     return null;
   }
 
   return (
-    <div 
-      className="relative w-full h-[300px] sm:h-[350px] mt-16"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+    <div
+      ref={containerRef}
+      className="relative w-full h-[300px] sm:h-[350px] mt-16 cursor-grab select-none overflow-hidden"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* Vignette overlay when hovered */}
-      {isHovered && (
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20 z-10 pointer-events-none" />
-      )}
-      
-      {/* Navigation buttons - only visible on hover */}
-      {isHovered && (
-        <>
-          <button
-            className="absolute left-4 top-1/2 z-20 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm hover:bg-white/90 rounded-full p-3 transition-all duration-300 shadow-lg"
-            onClick={prevSlide}
-          >
-            <ChevronLeft size={24} className="text-gray-800" />
-          </button>
-          <button
-            className="absolute right-4 top-1/2 z-20 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm hover:bg-white/90 rounded-full p-3 transition-all duration-300 shadow-lg"
-            onClick={nextSlide}
-          >
-            <ChevronRight size={24} className="text-gray-800" />
-          </button>
-        </>
-      )}
-
       {/* Carousel images */}
       {carouselImages.map((image, index) => (
         <div
@@ -82,17 +142,21 @@ const HeroCarousel = () => {
           className={`absolute w-full h-full transition-all duration-700 ease-in-out ${
             index === current ? "opacity-100 scale-100" : "opacity-0 scale-105"
           }`}
-          style={{ zIndex: index === current ? 1 : 0 }}
+          style={{ 
+            zIndex: index === current ? 1 : 0,
+            transform: isDragging && index === current ? `translateX(${currentTranslate - prevTranslate}px)` : 'none'
+          }}
         >
           <img
             src={image.src}
             alt={image.alt}
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full pointer-events-none"
+            draggable={false}
           />
           <div className="absolute inset-0 bg-black/10"></div>
         </div>
       ))}
-
+      
       {/* Navigation dots - positioned below carousel */}
       <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
         {carouselImages.map((_, index) => (
