@@ -37,7 +37,12 @@ const TestimonialsSection: React.FC<TestimonialsWithMarqueeProps> = ({
         {/* Horizontal Marquee */}
         <div className="mt-10 relative">
           {/* First marquee row - left to right */}
-          <div className="flex animate-marquee-left gap-6 mb-6">
+          <div 
+            className="flex gap-6 mb-6"
+            style={{
+              animation: 'marqueeLeft 60s linear infinite',
+            }}
+          >
             {[...testimonials, ...testimonials].map((testimonial, index) => (
               <div
                 key={index}
@@ -62,7 +67,12 @@ const TestimonialsSection: React.FC<TestimonialsWithMarqueeProps> = ({
           </div>
           
           {/* Second marquee row - right to left */}
-          <div className="flex animate-marquee-right gap-6">
+          <div 
+            className="flex gap-6"
+            style={{
+              animation: 'marqueeRight 60s linear infinite',
+            }}
+          >
             {[...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => (
               <div
                 key={index}
@@ -92,8 +102,9 @@ const TestimonialsSection: React.FC<TestimonialsWithMarqueeProps> = ({
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
       </div>
       
-      <style jsx>{`
-        @keyframes marquee-left {
+      {/* Global styles for marquee animations */}
+      <style jsx global>{`
+        @keyframes marqueeLeft {
           0% {
             transform: translateX(0);
           }
@@ -102,21 +113,13 @@ const TestimonialsSection: React.FC<TestimonialsWithMarqueeProps> = ({
           }
         }
         
-        @keyframes marquee-right {
+        @keyframes marqueeRight {
           0% {
             transform: translateX(-50%);
           }
           100% {
             transform: translateX(0);
           }
-        }
-        
-        .animate-marquee-left {
-          animation: marquee-left 60s linear infinite;
-        }
-        
-        .animate-marquee-right {
-          animation: marquee-right 60s linear infinite;
         }
       `}</style>
     </section>
