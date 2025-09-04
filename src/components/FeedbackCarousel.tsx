@@ -1,16 +1,7 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Star, Quote, Users, GraduationCap, Network } from "lucide-react";
-import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
-import HighlightedText from "@/components/ui/HighlightedText";
+import React from 'react';
+import { TestimonialsSection } from '@/components/blocks/testimonials-with-marquee';
 
-type Testimonial = {
-  text: string;
-  name: string;
-  role: string;
-};
-
-const courseFeedbackData = [
+const testimonials = [
   {
     text: "I've always had trouble with maths. Group classes used to make me feel even more behind. But here, I could go topic by topic and understand at my own pace. It was simple, but powerful. I wish I had found this earlier.",
     name: "Saket",
@@ -88,61 +79,13 @@ const courseFeedbackData = [
   },
 ];
 
-const keywordsToHighlight = [
-  "paid batch",
-  "non-maths background",
-  "non maths background",
-  "work full-time",
-  "work full time",
-  "free",
-  "batch",
-  "stuck in JEE",
-  "students really need",
-  "powerful",
-  "fresh start",
-  "enjoy studying",
-  "easier",
-  "well arranged",
-  "accurate",
-  "worked",
-  "included",
-  "cared",
-  "doable",
-  "good decision",
-  "real difference",
-  "huge difference",
-  "more than enough",
-  "confident",
-  "easy to access",
-  "sail through"
-];
-
-const firstColumn = courseFeedbackData.slice(0, 5);
-const secondColumn = courseFeedbackData.slice(5, 10);
-const thirdColumn = courseFeedbackData.slice(10, 15);
-
 const FeedbackCarousel = () => {
   return (
-    <section className="bg-background my-20 relative">
-      <div className="container z-10 mx-auto">
-        <div className="flex flex-col items-center justify-center max-w-[540px] mx-auto">
-          <div className="flex justify-center">
-            <div className="border py-1 px-4 rounded-lg font-semibold text-royal">Student Feedback</div>
-          </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tighter mt-5 text-center">
-            What our students say
-          </h2>
-          <p className="text-center mt-5 opacity-75">
-            See what our course students have to say about their learning journey.
-          </p>
-        </div>
-        <div className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px] overflow-hidden">
-          <TestimonialsColumn duration={16} testimonials={firstColumn} />
-          <TestimonialsColumn className="hidden md:block" duration={20} testimonials={secondColumn} />
-          <TestimonialsColumn className="hidden lg:block" duration={18} testimonials={thirdColumn} />
-        </div>
-      </div>
-    </section>
+    <TestimonialsSection
+      title="What our students say"
+      description="See what our course students have to say about their learning journey."
+      testimonials={testimonials}
+    />
   );
 };
 
