@@ -10,6 +10,7 @@ import CoursesHeader from "@/components/courses/CoursesHeader";
 import WhyChooseUsSection from "@/components/courses/WhyChooseUsSection";
 import CategoryFilter from "@/components/courses/CategoryFilter";
 import HeroCarousel from "@/components/HeroCarousel";
+import FeedbackCarousel from "@/components/FeedbackCarousel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, Filter, BookOpen, Users, Star, Play } from "lucide-react";
@@ -152,14 +153,14 @@ const Courses = () => {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     {searchQuery && (
-                      <Button 
+                      <Button
                         variant="outline" 
                         onClick={() => setSearchQuery("")}
                       >
                         Clear Search
                       </Button>
                     )}
-                    <Button 
+                    <Button
                       onClick={() => {
                         setSelectedCategory("all");
                         setSearchQuery("");
@@ -174,11 +175,13 @@ const Courses = () => {
           </div>
         </section>
         
+        {/* Feedback Carousel Section */}
+        <FeedbackCarousel />
+        
         {/* Why Choose Us Section */}
         <WhyChooseUsSection />
         
       </main>
-      
       <Footer />
     </>
   );
