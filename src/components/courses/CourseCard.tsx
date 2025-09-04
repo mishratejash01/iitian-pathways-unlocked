@@ -30,10 +30,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
       transition={{ duration: 0.3, delay: index * 0.1 }}
     >
       <Card className="relative h-full overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-300 bg-white">
-        {/* Bestseller Badge */}
+        {/* Bestseller Badge - Repositioned to top left corner */}
         {course.bestseller && (
-          <div className="absolute top-0 right-0 z-10">
-            <Badge className="m-2 bg-amber-500 hover:bg-amber-600 text-white font-medium">
+          <div className="absolute top-3 left-3 z-20">
+            <Badge className="bg-amber-500 hover:bg-amber-600 text-white font-medium px-2 py-1 shadow-lg">
               <Star className="h-3 w-3 mr-1 fill-current" /> Bestseller
             </Badge>
           </div>
@@ -46,10 +46,13 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
             : 'from-royal to-royal-dark'
         }`} />
         
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg md:text-xl font-bold text-gray-800">
-            {course.title}
-          </CardTitle>
+        <CardHeader className="pb-2 pt-4">
+          {/* Add extra top padding when bestseller badge is present */}
+          <div className={course.bestseller ? 'mt-8' : 'mt-0'}>
+            <CardTitle className="text-lg md:text-xl font-bold text-gray-800">
+              {course.title}
+            </CardTitle>
+          </div>
           
           {/* Premium Calendar Badge - Mobile Enhanced */}
           <div className="flex items-center justify-between mt-3">
