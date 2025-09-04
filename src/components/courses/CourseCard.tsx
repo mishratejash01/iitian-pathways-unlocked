@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,51 +29,98 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
       animate="visible"
       transition={{ duration: 0.3, delay: index * 0.1 }}
     >
-      <Card className="h-full overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-300">
+      <Card className="relative h-full overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-300 bg-white">
+        {/* Bestseller Badge */}
         {course.bestseller && (
           <div className="absolute top-0 right-0 z-10">
-            <Badge className="m-2 bg-amber-500 hover:bg-amber-600">
+            <Badge className="m-2 bg-amber-500 hover:bg-amber-600 text-white font-medium">
               <Star className="h-3 w-3 mr-1 fill-current" /> Bestseller
             </Badge>
           </div>
         )}
-        <div className={`h-2 ${course.bestseller ? 'bg-gradient-to-r from-amber-400 to-amber-600' : 'bg-gradient-to-r from-royal to-royal-dark'}`}></div>
+        
+        {/* Gradient Top Border */}
+        <div className={`h-2 bg-gradient-to-r ${
+          course.bestseller 
+            ? 'from-amber-400 to-amber-600' 
+            : 'from-royal to-royal-dark'
+        }`} />
+        
         <CardHeader className="pb-2">
-          <CardTitle>{course.title}</CardTitle>
-          <div className="flex items-center text-sm text-gray-500">
-            <Calendar className="h-4 w-4 mr-1" /> 
-            {course.duration}
-            <Users className="h-4 w-4 ml-4 mr-1" /> 
-            {course.students_enrolled || 0} students
+          <CardTitle className="text-lg md:text-xl font-bold text-gray-800">
+            {course.title}
+          </CardTitle>
+          
+          {/* Premium Calendar Badge - Mobile Enhanced */}
+          <div className="flex items-center justify-between mt-3">
+            <div className="flex items-center gap-3">
+              {/* Large Premium Calendar Badge for Mobile */}
+              <div className="flex items-center bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg px-3 py-2 md:px-2 md:py-1">
+                <Calendar className="h-5 w-5 md:h-4 md:w-4 mr-2 md:mr-1 text-blue-600" />
+                <span className="text-sm md:text-xs font-semibold text-blue-700">
+                  {course.duration}
+                </span>
+              </div>
+              
+              {/* Students Count */}
+              <div className="flex items-center text-gray-500">
+                <Users className="h-4 w-4 mr-1" />
+                <span className="text-sm font-medium">
+                  {course.students_enrolled || 0}
+                </span>
+              </div>
+            </div>
           </div>
         </CardHeader>
-        <CardContent>
-          <CardDescription className="text-gray-600 mb-4">{course.description}</CardDescription>
-          <div className="grid grid-cols-2 gap-2">
+        
+        <CardContent className="pb-4">
+          <CardDescription className="text-gray-600 mb-4 leading-relaxed">
+            {course.description}
+          </CardDescription>
+          
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {course.features?.map((feature, i) => (
-              <div key={i} className="flex items-center text-sm">
-                <CheckCircle className="h-3 w-3 mr-1 text-green-500" /> 
-                {feature}
+              <div className="flex items-center text-sm" key={i}>
+                <CheckCircle className="h-3 w-3 mr-2 text-green-500 flex-shrink-0" />
+                <span className="text-gray-700">{feature}</span>
               </div>
             ))}
           </div>
         </CardContent>
-        <CardFooter className="border-t pt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center">
-          <div className="mb-3 sm:mb-0">
+        
+        <CardFooter className="border-t pt-4 relative">
+          {/* Price Tag - Bottom Left Corner */}
+          <div className="absolute bottom-4 left-4 z-10">
             {course.discounted_price && course.discounted_price < course.price ? (
-              <>
-                <span className="text-xl font-bold text-royal">₹{course.discounted_price}</span>
-                <span className="ml-2 text-gray-500 line-through">₹{course.price}</span>
-              </>
+              <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-2 rounded-lg shadow-lg">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-bold">₹{course.discounted_price}</span>
+                  <span className="text-xs line-through opacity-80">₹{course.price}</span>
+                </div>
+              </div>
             ) : (
-              <span className="text-xl font-bold text-royal">₹{course.price}</span>
+              <div className="bg-gradient-to-r from-royal to-royal-dark text-white px-3 py-2 rounded-lg shadow-lg">
+                <span className="text-lg font-bold">₹{course.price}</span>
+              </div>
             )}
           </div>
-          <EnrollButton 
-            courseId={course.id}
-            enrollmentLink={course.enroll_now_link || undefined}
-            className={`${course.bestseller ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700' : 'bg-royal hover:bg-royal-dark'} text-white px-5 py-2`}
-          />
+          
+          {/* Enroll Button - Bottom Right Corner (Floating) */}
+          <div className="absolute bottom-4 right-4 z-10">
+            <EnrollButton
+              courseId={course.id}
+              enrollmentLink={course.enroll_now_link || undefined}
+              className={`${
+                course.bestseller 
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 shadow-amber-200' 
+                  : 'bg-gradient-to-r from-royal to-royal-dark hover:from-royal-dark hover:to-royal shadow-royal/30'
+              } text-white px-4 py-2 md:px-5 md:py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200`}
+            />
+          </div>
+          
+          {/* Spacer to maintain card height */}
+          <div className="w-full h-12" />
         </CardFooter>
       </Card>
     </motion.div>
