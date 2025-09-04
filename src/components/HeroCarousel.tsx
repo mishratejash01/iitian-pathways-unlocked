@@ -4,14 +4,20 @@ const carouselImages = [
   {
     src: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=2000&h=500",
     alt: "Educational technology and programming",
+    title: "Transform Your Career",
+    subtitle: "Learn cutting-edge technologies from IIT alumni"
   },
   {
     src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=2000&h=500",
     alt: "Coding and software development education",
+    title: "Master Programming",
+    subtitle: "Build real-world projects with expert guidance"
   },
   {
     src: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=2000&h=500",
     alt: "Student working on laptop",
+    title: "Achieve Excellence",
+    subtitle: "Join thousands of successful students"
   },
 ];
 
@@ -153,7 +159,18 @@ const HeroCarousel = () => {
             className="object-cover w-full h-full pointer-events-none"
             draggable={false}
           />
-          <div className="absolute inset-0 bg-black/10"></div>
+          {/* Premium mobile overlay with gradient and text */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 md:bg-black/10"></div>
+          
+          {/* Text overlay - visible and premium on mobile */}
+          <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 md:right-8 text-white">
+            <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2 tracking-wide">
+              {image.title}
+            </h2>
+            <p className="text-sm md:text-lg font-medium opacity-90 leading-relaxed">
+              {image.subtitle}
+            </p>
+          </div>
         </div>
       ))}
       
