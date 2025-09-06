@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -29,8 +28,8 @@ const NavBar = () => {
         <div className="flex justify-center items-center h-16 relative">
           {/* Logo - positioned on the left side of center group */}
           <div className="flex items-center absolute left-0">
-            <Link to="/" className="flex-shrink-0 flex items-center">
-              <img
+            <Link className="flex-shrink-0 flex items-center" to="/">
+              <img 
                 src="/lovable-uploads/UI_logo.png" 
                 alt="Unknown IITians Logo" 
                 className="h-10 w-auto"
@@ -40,13 +39,13 @@ const NavBar = () => {
 
           {/* Center Navigation Group */}
           <div className="hidden md:flex items-center justify-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-royal transition-colors">
+            <Link className="text-gray-700 hover:text-royal transition-colors" to="/">
               Home
             </Link>
-            <Link to="/about" className="text-gray-700 hover:text-royal transition-colors">
+            <Link className="text-gray-700 hover:text-royal transition-colors" to="/about">
               About
             </Link>
-            <Link to="/courses" className="text-gray-700 hover:text-royal transition-colors">
+            <Link className="text-gray-700 hover:text-royal transition-colors" to="/courses">
               Courses
             </Link>
             
@@ -75,7 +74,11 @@ const NavBar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <Link to="/career" className="text-gray-700 hover:text-royal transition-colors">
+            <Link className="text-gray-700 hover:text-royal transition-colors" to="/iitm-bs-tools">
+              IITM BS Tools
+            </Link>
+            
+            <Link className="text-gray-700 hover:text-royal transition-colors" to="/career">
               Career
             </Link>
           </div>
@@ -89,7 +92,9 @@ const NavBar = () => {
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                       <Avatar className="h-8 w-8">
                         <AvatarImage src={user.user_metadata?.avatar_url} alt={user.email} />
-                        <AvatarFallback>{user.email?.charAt(0).toUpperCase()}</AvatarFallback>
+                        <AvatarFallback>
+                          {user.email?.charAt(0).toUpperCase()}
+                        </AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
@@ -135,34 +140,37 @@ const NavBar = () => {
         {isOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
-              <Link to="/" className="block px-3 py-2 text-gray-700 hover:text-royal">
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/">
                 Home
               </Link>
-              <Link to="/about" className="block px-3 py-2 text-gray-700 hover:text-royal">
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/about">
                 About
               </Link>
-              <Link to="/courses" className="block px-3 py-2 text-gray-700 hover:text-royal">
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/courses">
                 Courses
               </Link>
-              <Link to="/exam-preparation" className="block px-3 py-2 text-gray-700 hover:text-royal">
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/exam-preparation">
                 Exam Preparation
               </Link>
-              <Link to="/exam-preparation/jee" className="block px-3 py-2 text-gray-700 hover:text-royal ml-4">
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal ml-4" to="/exam-preparation/jee">
                 JEE Prep
               </Link>
-              <Link to="/exam-preparation/neet" className="block px-3 py-2 text-gray-700 hover:text-royal ml-4">
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal ml-4" to="/exam-preparation/neet">
                 NEET Prep
               </Link>
-              <Link to="/exam-preparation/iitm-bs" className="block px-3 py-2 text-gray-700 hover:text-royal ml-4">
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal ml-4" to="/exam-preparation/iitm-bs">
                 IITM BS Prep
               </Link>
-              <Link to="/career" className="block px-3 py-2 text-gray-700 hover:text-royal">
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/iitm-bs-tools">
+                IITM BS Tools
+              </Link>
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/career">
                 Career
               </Link>
               
               {user ? (
                 <>
-                  <Link to="/dashboard" className="block px-3 py-2 text-gray-700 hover:text-royal">
+                  <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/dashboard">
                     Dashboard
                   </Link>
                   <button
@@ -173,7 +181,7 @@ const NavBar = () => {
                   </button>
                 </>
               ) : (
-                <Link to="/auth" className="block px-3 py-2">
+                <Link className="block px-3 py-2" to="/auth">
                   <Button variant="signin" className="w-full bg-royal hover:bg-royal-dark text-white">
                     Sign In
                   </Button>
