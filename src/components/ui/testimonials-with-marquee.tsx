@@ -21,19 +21,19 @@ export function TestimonialsSection({
   return (
     <section className={cn(
       "bg-background text-foreground",
-      "py-6 sm:py-8 md:py-12 px-0", // Reduced vertical padding significantly
+      "py-2 sm:py-3 md:py-4 px-0 m-0", // Minimal vertical padding and margins
       className
     )}>
-      <div className="mx-auto flex max-w-container flex-col items-center gap-3 text-center sm:gap-6"> {/* Reduced gaps */}
-        <div className="flex flex-col items-center gap-2 px-4 sm:gap-4"> {/* Reduced gaps */}
-          <h2 className="max-w-[720px] text-2xl font-semibold leading-tight sm:text-3xl md:text-4xl sm:leading-tight"> {/* Reduced font sizes */}
+      <div className="mx-auto flex max-w-container flex-col items-center gap-1 text-center sm:gap-2 py-0 my-0"> {/* Minimal gaps and no padding */}
+        <div className="flex flex-col items-center gap-1 px-4 sm:gap-2 py-0 my-0"> {/* Minimal gaps */}
+          <h2 className="max-w-[720px] text-xl font-semibold leading-tight sm:text-2xl md:text-3xl sm:leading-tight py-0 my-0"> {/* Smaller font sizes and no margins */}
             {title}
           </h2>
-          <p className="text-sm max-w-[600px] font-medium text-muted-foreground sm:text-base md:text-lg"> {/* Reduced font sizes */}
+          <p className="text-xs max-w-[600px] font-medium text-muted-foreground sm:text-sm md:text-base py-0 my-0"> {/* Smaller font sizes and no margins */}
             {description}
           </p>
         </div>
-        <div className="testimonial-scroll w-full max-h-48 overflow-hidden"> {/* Added max-height and overflow control */}
+        <div className="testimonial-scroll w-full h-[180px] max-h-[180px] overflow-hidden my-0 py-0"> {/* Fixed height with strict limits */}
           {testimonials.map((testimonial, i) => (
             <TestimonialCard
               key={i}
