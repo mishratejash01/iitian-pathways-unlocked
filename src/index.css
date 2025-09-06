@@ -1,77 +1,93 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 body {
   @apply bg-background text-foreground;
   font-feature-settings: "rlig" 1, "calt" 1;
 }
+
+/* General page styling with proper spacing */
+section {
+  padding: 2rem 0;
+}
+
+.page-container {
+  padding: 1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+}
+
+h1:first-child, h2:first-child, h3:first-child {
+  margin-top: 0;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* Ultra-compact styling scoped to feedback carousel only */
+.feedback-carousel {
+  margin: 0;
+  padding: 0;
+}
+
+.feedback-carousel * {
+  margin: 0;
+  padding: 0;
+}
+
+.feedback-carousel h1,
+.feedback-carousel h2,
+.feedback-carousel h3,
+.feedback-carousel h4,
+.feedback-carousel h5,
+.feedback-carousel h6 {
+  margin: 0;
+}
+
+.feedback-carousel p {
+  margin: 0;
+}
+
+/* Color utilities */
 .royal {
   color: #1e3a8a;
 }
+
 .royal-dark {
   color: #1e40af;
 }
+
 .bg-royal {
   background-color: #1e3a8a;
 }
+
 .bg-royal-dark {
   background-color: #1e40af;
 }
+
 .border-royal {
   border-color: #1e3a8a;
 }
+
 .text-royal {
   color: #1e3a8a;
 }
+
 .hover\:text-royal:hover {
   color: #1e3a8a;
 }
+
 .hover\:bg-royal:hover {
   background-color: #1e3a8a;
 }
+
 .hover\:bg-royal-dark:hover {
   background-color: #1e40af;
 }
+
 .hover\:border-royal:hover {
   border-color: #1e3a8a;
-}
-
-/* Testimonial scrollable styles - Ultra compact version */
-.testimonial-scroll {
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  height: 180px;
-  max-height: 180px;
-  min-height: 180px;
-  gap: 12px;
-  padding: 0;
-  margin: 0;
-  scroll-behavior: smooth;
-  flex-wrap: nowrap;
-}
-
-.testimonial-card {
-  min-width: 280px;
-  width: 280px;
-  height: 160px;
-  max-height: 160px;
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  margin: 0;
-  border-radius: 8px;
-}
-
-/* Ensure no extra margins or padding around testimonials */
-.testimonial-scroll * {
-  box-sizing: border-box;
-}
-
-/* Remove any potential margins from parent containers */
-section:has(.testimonial-scroll) {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
 }
