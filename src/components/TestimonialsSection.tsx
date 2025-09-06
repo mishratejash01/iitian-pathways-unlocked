@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { Star, Quote, Users, GraduationCap, Network } from "lucide-react";
@@ -91,11 +90,43 @@ const testimonialsData = [
   },
 ];
 
-const firstColumn = testimonialsData.slice(0, 5);
-const secondColumn = testimonialsData.slice(5, 10);
-const thirdColumn = testimonialsData.slice(10, 15);
-
 const TestimonialsSection = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    
+    let animationFrameId: number;
+    let scrollPosition = 0;
+    const scrollSpeed = 1; // Pixels per frame
+    
+    const animate = () => {
+      if (container) {
+        scrollPosition += scrollSpeed;
+        
+        // Check if we've scrolled to the end
+        if (scrollPosition >= container.scrollWidth - container.clientWidth) {
+          scrollPosition = 0; // Loop back to start
+        }
+        
+        container.scrollLeft = scrollPosition;
+      }
+      
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    
+    // Start animation
+    animationFrameId = requestAnimationFrame(animate);
+    
+    // Cleanup
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, []);
+  
   return (
     <section className="bg-background my-20 relative">
       <div className="container z-10 mx-auto">
@@ -110,10 +141,43 @@ const TestimonialsSection = () => {
             See what our community has to say about Unknown IITians.
           </p>
         </div>
-        <div className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px] overflow-hidden">
-          <TestimonialsColumn testimonials={firstColumn} duration={16} />
-          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={20} />
-          <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={18} />
+        
+        {/* Auto-scrolling marquee container */}
+        <div 
+          ref={containerRef}
+          className="flex gap-6 mt-10 overflow-hidden whitespace-nowrap"
+          style={{ 
+            maskImage: 'linear-gradient(to right, transparent, black 25%, black 75%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, black 25%, black 75%, transparent)'
+          }}
+        >
+          {/* Render testimonials multiple times for seamless loop */}
+          {[...Array(3)].map((_, setIndex) => (
+            <div key={setIndex} className="flex gap-6 shrink-0">
+              {testimonialsData.map((testimonial, index) => (
+                <div 
+                  key={`${setIndex}-${index}`} 
+                  className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm w-80 shrink-0"
+                >
+                  <div className="flex items-center mb-4">
+                    <div className="flex text-yellow-400">
+                      {[...Array(5)].map((_, starIndex) => (
+                        <Star key={starIndex} className="w-4 h-4 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  <Quote className="text-royal mb-2" size={20} />
+                  <p className="text-gray-700 mb-4 whitespace-normal leading-relaxed">
+                    {testimonial.text}
+                  </p>
+                  <div className="border-t pt-4">
+                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </section>
