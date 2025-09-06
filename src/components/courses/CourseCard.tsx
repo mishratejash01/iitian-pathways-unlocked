@@ -29,7 +29,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
       animate="visible"
       transition={{ duration: 0.3, delay: index * 0.1 }}
     >
-      <Card className="relative h-full overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-300 bg-white">
+      <Card className="relative h-full overflow-hidden border-none shadow-xl hover:shadow-2xl transition-all duration-300 bg-white flex flex-col">
         {/* Bestseller Badge - Repositioned to top left corner */}
         {course.bestseller && (
           <div className="absolute top-3 left-3 z-20">
@@ -48,7 +48,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
         
         <CardHeader className="pb-2 pt-4">
           {/* Add extra top padding when bestseller badge is present */}
-          <div className={course.bestseller ? 'mt-8' : 'mt-0'}>
+          <div className={course.bestseller ? 'pt-8' : ''}>
             <CardTitle className="text-lg md:text-xl font-bold text-gray-800">
               {course.title}
             </CardTitle>
@@ -76,7 +76,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
           </div>
         </CardHeader>
         
-        <CardContent className="pb-4">
+        <CardContent className="pb-4 flex-1">
           <CardDescription className="text-gray-600 mb-4 leading-relaxed">
             {course.description}
           </CardDescription>
@@ -92,38 +92,38 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
           </div>
         </CardContent>
         
-        <CardFooter className="border-t pt-4 relative">
-          {/* Price Tag - Bottom Left Corner */}
-          <div className="absolute bottom-4 left-4 z-10">
-            {course.discounted_price && course.discounted_price < course.price ? (
-              <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-2 rounded-lg shadow-lg">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold">₹{course.discounted_price}</span>
-                  <span className="text-xs line-through opacity-80">₹{course.price}</span>
+        <CardFooter className="border-t pt-4 mt-auto">
+          {/* Modern horizontal layout with proper spacing */}
+          <div className="flex items-center justify-between w-full gap-4">
+            {/* Price Section - Left aligned */}
+            <div className="flex-shrink-0">
+              {course.discounted_price && course.discounted_price < course.price ? (
+                <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg shadow-md">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl font-bold">₹{course.discounted_price}</span>
+                    <span className="text-sm line-through opacity-80">₹{course.price}</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="bg-gradient-to-r from-royal to-royal-dark text-white px-3 py-2 rounded-lg shadow-lg">
-                <span className="text-lg font-bold">₹{course.price}</span>
-              </div>
-            )}
+              ) : (
+                <div className="bg-gradient-to-r from-royal to-royal-dark text-white px-4 py-2 rounded-lg shadow-md">
+                  <span className="text-xl font-bold">₹{course.price}</span>
+                </div>
+              )}
+            </div>
+            
+            {/* Enroll Button - Right aligned */}
+            <div className="flex-shrink-0">
+              <EnrollButton
+                courseId={course.id}
+                enrollmentLink={course.enroll_now_link || undefined}
+                className={`${
+                  course.bestseller 
+                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700' 
+                    : 'bg-gradient-to-r from-royal to-royal-dark hover:from-royal-dark hover:to-royal'
+                } text-white px-6 py-2.5 rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 whitespace-nowrap`}
+              />
+            </div>
           </div>
-          
-          {/* Enroll Button - Bottom Right Corner (Floating) */}
-          <div className="absolute bottom-4 right-4 z-10">
-            <EnrollButton
-              courseId={course.id}
-              enrollmentLink={course.enroll_now_link || undefined}
-              className={`${
-                course.bestseller 
-                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 shadow-amber-200' 
-                  : 'bg-gradient-to-r from-royal to-royal-dark hover:from-royal-dark hover:to-royal shadow-royal/30'
-              } text-white px-4 py-2 md:px-5 md:py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200`}
-            />
-          </div>
-          
-          {/* Spacer to maintain card height */}
-          <div className="w-full h-12" />
         </CardFooter>
       </Card>
     </motion.div>
