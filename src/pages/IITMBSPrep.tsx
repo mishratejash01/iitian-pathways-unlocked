@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate, Routes, Route, Navigate } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,7 +11,38 @@ import SyllabusTab from "@/components/iitm/SyllabusTab";
 import PaidCoursesTab from "@/components/iitm/PaidCoursesTab";
 
 const IITMBSPrep = () => {
-  const [activeTab, setActiveTab] = useState("notes");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Extract current tab from URL path
+  const getCurrentTab = () => {
+    const pathSegments = location.pathname.split('/');
+    const tabSegment = pathSegments[pathSegments.length - 1];
+    
+    // Valid tab values
+    const validTabs = ['notes', 'pyqs', 'syllabus', 'courses', 'news', 'dates'];
+    
+    // If we're at the base path or invalid tab, default to notes
+    if (pathSegments[pathSegments.length - 1] === 'iitm-bs' || !validTabs.includes(tabSegment)) {
+      return 'notes';
+    }
+    
+    return tabSegment;
+  };
+
+  const activeTab = getCurrentTab();
+
+  // Handle tab changes by updating URL
+  const handleTabChange = (tabValue: string) => {
+    navigate(`/exam-preparation/iitm-bs/${tabValue}`);
+  };
+
+  // Redirect to default tab if at base path
+  useEffect(() => {
+    if (location.pathname === '/exam-preparation/iitm-bs' || location.pathname === '/exam-preparation/iitm-bs/') {
+      navigate('/exam-preparation/iitm-bs/notes', { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <>
@@ -22,14 +54,14 @@ const IITMBSPrep = () => {
             <p className="text-xl text-gray-600">Comprehensive resources for IITM BS Data Science & Electronic Systems</p>
           </div>
           
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <div className="overflow-x-auto">
               <TabsList className="inline-flex w-max min-w-full">
                 <TabsTrigger value="notes" className="whitespace-nowrap">Notes</TabsTrigger>
                 <TabsTrigger value="pyqs" className="whitespace-nowrap">PYQs</TabsTrigger>
                 <TabsTrigger value="syllabus" className="whitespace-nowrap">Syllabus</TabsTrigger>
-                <TabsTrigger 
-                  value="courses" 
+                <TabsTrigger
+                  value="courses"
                   className="whitespace-nowrap bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-white hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:via-yellow-600 data-[state=active]:to-yellow-700 shadow-lg border-2 border-yellow-400"
                 >
                   ✨ Courses
@@ -39,29 +71,39 @@ const IITMBSPrep = () => {
               </TabsList>
             </div>
             
-            <TabsContent value="notes" className="mt-6">
-              <BranchNotesTab />
-            </TabsContent>
-            
-            <TabsContent value="pyqs" className="mt-6">
-              <PYQsTab />
-            </TabsContent>
-            
-            <TabsContent value="syllabus" className="mt-6">
-              <SyllabusTab />
-            </TabsContent>
-            
-            <TabsContent value="courses" className="mt-6">
-              <PaidCoursesTab />
-            </TabsContent>
-            
-            <TabsContent value="news" className="mt-6">
-              <NewsTab />
-            </TabsContent>
-            
-            <TabsContent value="dates" className="mt-6">
-              <ImportantDatesTab />
-            </TabsContent>
+            <Routes>
+              <Route path="/" element={<Navigate to="notes" replace />} />
+              <Route path="/notes" element={
+                <TabsContent value="notes" className="mt-6">
+                  <BranchNotesTab />
+                </TabsContent>
+              } />
+              <Route path="/pyqs" element={
+                <TabsContent value="pyqs" className="mt-6">
+                  <PYQsTab />
+                </TabsContent>
+              } />
+              <Route path="/syllabus" element={
+                <TabsContent value="syllabus" className="mt-6">
+                  <SyllabusTab />
+                </TabsContent>
+              } />
+              <Route path="/courses" element={
+                <TabsContent value="courses" className="mt-6">
+                  <PaidCoursesTab />
+                </TabsContent>
+              } />
+              <Route path="/news" element={
+                <TabsContent value="news" className="mt-6">
+                  <NewsTab />
+                </TabsContent>
+              } />
+              <Route path="/dates" element={
+                <TabsContent value="dates" className="mt-6">
+                  <ImportantDatesTab />
+                </TabsContent>
+              } />
+            </Routes>
           </Tabs>
         </div>
       </div>
